@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Player_0ne_Scrpit : MonoBehaviour
+public class Player_2_scprit : MonoBehaviour
 {
     [Header("Movment")]
     [SerializeField] private float moveSpeed = 5f;
@@ -10,17 +10,16 @@ public class Player_0ne_Scrpit : MonoBehaviour
     private Vector2 lookInput;
     private Vector2 moveInput;
 
-    [Header("Shoot")]
-    [SerializeField] private GameObject projectilePrefab;
-    [SerializeField] private Transform firePoint;
-    [SerializeField] private float projectileSpeed = 12f;
+    [Header("Shield")]
+    [SerializeField] private GameObject Shield;
+    private bool isShield;
 
     private void Update()
     {
-        float yaw = lookInput.x * rotateSpeed* Time.deltaTime;
+        float yaw = lookInput.x * rotateSpeed * Time.deltaTime;
         transform.Rotate(0f, yaw, 0f, Space.World);
 
-        Vector3 move3 = new Vector3(moveInput.x, 0f, moveInput.y)*moveSpeed;
+        Vector3 move3 = new Vector3(moveInput.x, 0f, moveInput.y) * moveSpeed;
         transform.position += move3;
 
 
@@ -39,13 +38,12 @@ public class Player_0ne_Scrpit : MonoBehaviour
     public void OnJump(InputAction.CallbackContext context)
     {
         if (!context.performed) return;
-        transform.position += Vector3.up* jumpStep;
+        transform.position += Vector3.up * jumpStep;
     }
-    public void OnShoot(InputAction.CallbackContext context)
+    public void OnShield(InputAction.CallbackContext context)
     {
-        if (!context.performed) return;
-
-        var proj = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        proj.AddComponent<Rigidbody>().linearVelocity = firePoint.forward * projectileSpeed;
+        isShield = context.ReadValueAsButton();
+        Shield.SetActive(isShield);
+        
     }
 }
